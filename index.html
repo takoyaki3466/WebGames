@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f5">
+  <title>WebGames</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --background: #f5f5f5;
+      --surface: #fff;
+      --text: #111;
+      --muted: #777;
+      --border: #dedede;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--background);
+      color: var(--text);
+      font-family: Inter, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    main {
+      width: min(100%, 420px);
+      display: grid;
+      gap: 12px;
+    }
+
+    .game-link {
+      display: flex;
+      min-height: 76px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 22px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text);
+      text-decoration: none;
+      transition: background .16s ease, border-color .16s ease, transform .16s ease;
+    }
+
+    .game-link:hover {
+      transform: translateY(-2px);
+      border-color: #111;
+      background: #111;
+      color: #fff;
+    }
+
+    .game-link:focus-visible {
+      outline: 3px solid #888;
+      outline-offset: 3px;
+    }
+
+    .game-name {
+      font-size: 15px;
+      font-weight: 650;
+      letter-spacing: -.02em;
+    }
+
+    .arrow {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main aria-label="ゲーム選択">
+    <a class="game-link" href="./StaplerTheFinal/index.html">
+      <span class="game-name">Stapler The Final</span>
+      <span class="arrow" aria-hidden="true">↗</span>
+    </a>
+
+    <a class="game-link" href="./StreetStallGGame/index.html">
+      <span class="game-name">Street Stall Game</span>
+      <span class="arrow" aria-hidden="true">↗</span>
+    </a>
+  </main>
+</body>
+</html>
