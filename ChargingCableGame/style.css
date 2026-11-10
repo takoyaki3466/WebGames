@@ -1,0 +1,601 @@
+/* 「充電口、足りません。」— a wooden desk, a cardboard charger box and a store receipt. */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #6b4528;
+    font-family: "Hiragino Maru Gothic ProN", "Noto Sans CJK JP", system-ui, sans-serif;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#desk {
+    position: fixed;
+    inset: 0;
+    display: block;
+    cursor: grab;
+}
+
+#desk:active {
+    cursor: grabbing;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ---- title: looks like the side of a charger package ---- */
+#title {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 30% 20%, #c4935f, #6b4528);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    overflow: auto;
+}
+
+.package {
+    width: min(760px, 100%);
+    background: #fbfaf6;
+    border: 3px solid #222;
+    box-shadow: 14px 16px 0 rgba(0, 0, 0, 0.35);
+    padding: 22px 26px;
+    position: relative;
+}
+
+.package::before {
+    content: "USB-C ✕ ∞";
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    font: 700 12px monospace;
+    color: #c22;
+    border: 2px solid #c22;
+    padding: 2px 6px;
+    transform: rotate(6deg);
+}
+
+.package h1 {
+    margin: 0;
+    font-size: clamp(32px, 7vw, 58px);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+}
+
+.package h1 span {
+    color: #e0453a;
+}
+
+.package .catch {
+    margin: 6px 0 16px;
+    color: #555;
+    font-size: 14px;
+}
+
+#modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 10px;
+}
+
+.box {
+    text-align: left;
+    background: #fff;
+    border: 2px solid #222;
+    padding: 10px 12px;
+    cursor: pointer;
+    font: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.box b {
+    font-size: 17px;
+}
+
+.box small {
+    color: #666;
+}
+
+.box em {
+    font-style: normal;
+    font-size: 11px;
+    color: #a33;
+}
+
+.box.sel {
+    background: #222;
+    color: #fff;
+}
+
+.box.sel small {
+    color: #ccc;
+}
+
+.box.sel em {
+    color: #ffb3a8;
+}
+
+.row-label {
+    margin: 14px 0 6px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+#models {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.model {
+    font: inherit;
+    padding: 6px 12px;
+    border: 2px solid #222;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.model.sel {
+    background: #e0453a;
+    color: #fff;
+    border-color: #e0453a;
+}
+
+.model.locked {
+    opacity: .5;
+    cursor: not-allowed;
+    font-size: 12px;
+}
+
+#start {
+    margin-top: 18px;
+    width: 100%;
+    padding: 14px;
+    font-family: inherit;
+    font-weight: 900;
+    font-size: 22px;
+    background: #e0453a;
+    color: #fff;
+    border: 3px solid #222;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 #222;
+}
+
+#start:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 #222;
+}
+
+#stats {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #444;
+    line-height: 1.7;
+}
+
+#zukan {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.swatch {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #222;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.swatch.unknown {
+    opacity: .35;
+}
+
+#achievements {
+    columns: 2;
+    font-size: 11px;
+    color: #888;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+#achievements li.got {
+    color: #186;
+}
+
+.howto {
+    font-size: 12px;
+    color: #666;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+.back {
+    position: absolute;
+    left: 12px;
+    bottom: 8px;
+    font-size: 12px;
+    color: #fff;
+}
+
+/* ---- HUD: an inspection clipboard ---- */
+#hud {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    width: 190px;
+    background: #fdfcf3;
+    border: 2px solid #4a3b22;
+    border-top: 14px solid #8a6d3b;
+    padding: 8px 10px;
+    font-size: 13px;
+    box-shadow: 4px 6px 0 rgba(0, 0, 0, .3);
+    transform: rotate(-1.5deg);
+    pointer-events: none;
+}
+
+#hud .line {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed #bbb;
+    padding: 2px 0;
+}
+
+#hud .line b {
+    font-variant-numeric: tabular-nums;
+}
+
+.heatbar {
+    margin-top: 6px;
+    height: 10px;
+    border: 1px solid #333;
+    background: #eee;
+}
+
+#h-heat {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #f6c343, #f5772d);
+    transition: width .2s;
+}
+
+#h-heat.hot {
+    background: #e22;
+    animation: blink .4s infinite alternate;
+}
+
+@keyframes blink {
+    to {
+        opacity: .4;
+    }
+}
+
+.controls {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    display: flex;
+    gap: 6px;
+}
+
+.controls button, #flip {
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: 2px solid #222;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #222;
+}
+
+#flip {
+    position: fixed;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    padding: 10px 22px;
+    background: #ffe14d;
+}
+
+#flip:disabled {
+    opacity: .3;
+    cursor: not-allowed;
+}
+
+#bad {
+    position: fixed;
+    top: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #c00;
+    color: #fff;
+    padding: 6px 14px;
+    font-weight: 700;
+    font-size: 14px;
+    animation: blink .5s infinite alternate;
+}
+
+.hint {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    color: rgba(255, 255, 255, .75);
+    font-size: 11px;
+    pointer-events: none;
+}
+
+/* ---- speech ---- */
+#speech-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+.speech {
+    position: absolute;
+    opacity: 0;
+    transition: opacity .2s;
+    pointer-events: none;
+}
+
+.speech.show {
+    opacity: 1;
+}
+
+.speech-os {
+    transform: translate(-50%, 0);
+    width: min(260px, 70vw);
+    background: rgba(245, 245, 250, .96);
+    border-radius: 14px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #111;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+}
+
+.speech-os.show {
+    animation: slideDown .35s ease-out;
+}
+
+.speech-os .os-head {
+    font-size: 10px;
+    color: #777;
+    margin-bottom: 2px;
+}
+
+.speech-os.from-back {
+    background: #222;
+    color: #ffe14d;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -20px);
+        opacity: 0;
+    }
+}
+
+.speech-plug {
+    transform: translate(-50%, -100%);
+    background: #fff;
+    border: 2px solid #222;
+    border-radius: 12px;
+    padding: 4px 9px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.speech-plug::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    border: 6px solid transparent;
+    border-top-color: #222;
+}
+
+.speech-port {
+    transform: translate(-50%, 0);
+    background: #111;
+    color: #7f7;
+    font: 12px monospace;
+    padding: 3px 8px;
+    border-left: 4px solid #7f7;
+    white-space: nowrap;
+}
+
+/* ---- the job posting that drives across the desk ---- */
+#crowd {
+    position: fixed;
+    bottom: 70px;
+    left: 100%;
+    background: #ffef5a;
+    border: 3px solid #222;
+    padding: 8px 14px;
+    font-weight: 900;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 #222;
+}
+
+#crowd small {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+}
+
+#crowd.run {
+    animation: drive 9s linear forwards;
+}
+
+@keyframes drive {
+    from {
+        left: 100%;
+    }
+    to {
+        left: -420px;
+    }
+}
+
+/* ---- result: a long thermal-paper receipt ---- */
+#receipt {
+    position: fixed;
+    inset: 0;
+    background: rgba(40, 25, 10, .6);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: auto;
+    padding: 20px 0;
+}
+
+.paper {
+    width: min(330px, 92vw);
+    background: #fffef8;
+    font-family: "Noto Sans Mono CJK JP", monospace;
+    color: #222;
+    padding: 18px 16px 26px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
+    animation: print 1.1s steps(18) both;
+    transform-origin: top;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 95% 98%, 90% 100%, 85% 98%, 80% 100%, 75% 98%, 70% 100%, 65% 98%, 60% 100%, 55% 98%, 50% 100%, 45% 98%, 40% 100%, 35% 98%, 30% 100%, 25% 98%, 20% 100%, 15% 98%, 10% 100%, 5% 98%, 0 100%);
+}
+
+@keyframes print {
+    from {
+        clip-path: inset(0 0 100% 0);
+    }
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+.paper h2 {
+    text-align: center;
+    margin: 0;
+    font-size: 16px;
+}
+
+.paper .shop {
+    text-align: center;
+    font-size: 11px;
+    margin-bottom: 10px;
+}
+
+.paper .row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 2px 0;
+}
+
+.paper .total {
+    border-top: 2px dashed #222;
+    margin-top: 8px;
+    padding-top: 6px;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.paper .stamp {
+    margin: 10px auto 0;
+    color: #c22;
+    border: 3px double #c22;
+    padding: 4px;
+    text-align: center;
+    transform: rotate(-4deg);
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.paper .ach {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #186;
+}
+
+.paper .thanks {
+    margin-top: 14px;
+    font-size: 10px;
+    text-align: center;
+    color: #666;
+}
+
+.paper .btns {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.paper .btns button {
+    flex: 1;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px;
+    border: 2px solid #222;
+    background: #fff;
+    cursor: pointer;
+}
+
+.paper .btns button:first-child {
+    background: #e0453a;
+    color: #fff;
+}
+
+@media (max-width: 600px) {
+    #hud {
+        width: 150px;
+        font-size: 11px;
+        transform: none;
+    }
+
+    .hint {
+        display: none;
+    }
+
+    #flip {
+        top: auto;
+        bottom: 10px;
+        transform: none;
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+/* 3D overlays */
+#fx-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.ftext {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font: 900 20px sans-serif;
+    text-shadow: 0 0 3px #000, 2px 2px 0 rgba(0, 0, 0, .7);
+    white-space: nowrap;
+}
+
+#title {
+    background: radial-gradient(circle at 30% 20%, rgba(196, 147, 95, .55), rgba(107, 69, 40, .75));
+}
+

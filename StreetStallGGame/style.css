@@ -1,0 +1,597 @@
+
+:root {
+    --ink: #1b0f2a;
+    --red: #ff4a3d;
+    --yel: #ffd23f;
+    --navy: #13204a
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none
+}
+
+html, body {
+    height: 100%;
+    background: #0b1433;
+    overflow: hidden;
+    touch-action: none;
+    overscroll-behavior: none
+}
+
+body {
+    font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", "Meiryo", "Noto Sans JP", sans-serif;
+    color: var(--ink)
+}
+
+#wrap {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden
+}
+
+#wrap > canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block
+}
+
+#ui {
+    position: absolute;
+    inset: 0;
+    pointer-events: none
+}
+
+button {
+    font-family: inherit;
+    font-weight: 900;
+    cursor: pointer;
+    color: var(--ink);
+    pointer-events: auto;
+    border: .17em solid var(--ink);
+    box-shadow: 0 .2em 0 var(--ink);
+    background: #fff
+}
+
+button:active {
+    transform: translateY(.14em);
+    box-shadow: 0 .06em 0 var(--ink)
+}
+
+/* 極太縁取り文字 */
+.deco {
+    position: relative;
+    display: inline-block;
+    isolation: isolate
+}
+
+.deco::before {
+    content: attr(data-t);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    -webkit-text-stroke: var(--sw, .26em) var(--ink);
+    color: var(--ink);
+    text-shadow: .05em .09em 0 rgba(0, 0, 0, .45)
+}
+
+.deco .fg {
+    position: relative;
+    color: var(--fc, #fff)
+}
+
+#topbtns {
+    position: absolute;
+    top: .6em;
+    right: .6em;
+    display: flex;
+    gap: .45em;
+    z-index: 5
+}
+
+#topbtns button {
+    width: 2.3em;
+    height: 2.3em;
+    border-radius: 50%;
+    font-size: .95em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-width: .14em;
+    box-shadow: 0 .14em 0 var(--ink)
+}
+
+#topbtns button.on {
+    background: var(--yel)
+}
+
+#topbtns svg {
+    width: 1.2em;
+    height: 1.2em
+}
+
+.screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center
+}
+
+.screen.on {
+    display: flex
+}
+
+#title {
+    justify-content: flex-start;
+    padding-top: 6.6em;
+    pointer-events: none
+}
+
+.ttl {
+    font-size: 4.2em;
+    font-weight: 900;
+    line-height: 1.08;
+    text-align: center;
+    letter-spacing: .04em;
+    transform: rotate(-5deg);
+    --fc: var(--yel);
+    --sw: .3em
+}
+
+.ttl .deco {
+    --sw: .3em
+}
+
+.ttl .fg {
+    background: linear-gradient(180deg, #fffb8a 0%, #ffd23f 50%, #ff8a1f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent
+}
+
+.catch {
+    margin-top: .7em;
+    font-size: 1.05em;
+    font-weight: 900;
+    letter-spacing: .05em;
+    --sw: .32em
+}
+
+#btnStart {
+    position: absolute;
+    bottom: 4.4em;
+    font-size: 1.55em;
+    padding: .38em 2.1em;
+    border-radius: 999px;
+    background: var(--red);
+    color: #fff;
+    letter-spacing: .1em;
+    text-shadow: 0 .08em 0 rgba(0, 0, 0, .25)
+}
+
+#btnFest {
+    position: absolute;
+    bottom: 9.4em;
+    font-size: .8em;
+    padding: .3em 1em;
+    border-radius: 999px;
+    display: none
+}
+
+#btnFest.show {
+    display: block
+}
+
+#btnFest.on {
+    background: var(--yel)
+}
+
+.minis {
+    position: absolute;
+    bottom: 1em;
+    display: flex;
+    gap: .4em
+}
+
+.minis button {
+    font-size: .76em;
+    padding: .38em .8em;
+    border-radius: 999px;
+    border-width: .14em;
+    box-shadow: 0 .14em 0 var(--ink)
+}
+
+.panel {
+    pointer-events: auto;
+    background: rgba(11, 20, 51, .6);
+    justify-content: center
+}
+
+.card {
+    width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    background: #fffaf0;
+    border: .2em solid var(--ink);
+    box-shadow: .3em .35em 0 var(--ink);
+    border-radius: 1.2em;
+    padding: 1.1em 1em;
+    text-align: center;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y
+}
+
+.rl {
+    font-size: .9em;
+    font-weight: 900;
+    opacity: .75
+}
+
+.rs {
+    font-size: 2.9em;
+    font-weight: 900;
+    line-height: 1.2;
+    color: var(--yel);
+    -webkit-text-stroke: .16em var(--ink);
+    paint-order: stroke fill;
+    text-shadow: .04em .07em 0 var(--ink)
+}
+
+.rs small {
+    font-size: .45em;
+    margin-left: .1em
+}
+
+.rr {
+    font-size: 1.2em;
+    font-weight: 900;
+    margin: .25em 0 .8em
+}
+
+.rr b {
+    color: var(--red)
+}
+
+.rgrid {
+    display: grid;
+    grid-template-columns:1fr 1fr;
+    gap: .4em;
+    font-size: .8em;
+    margin-bottom: .7em;
+    font-weight: 800
+}
+
+.rgrid div {
+    background: #fff;
+    border: .15em solid var(--ink);
+    border-radius: .7em;
+    padding: .4em .3em
+}
+
+.rgrid b {
+    display: block;
+    font-size: 1.3em;
+    color: var(--red)
+}
+
+.rbest {
+    font-size: .76em;
+    line-height: 1.75;
+    margin-bottom: .6em;
+    font-weight: 700
+}
+
+.rbest .new {
+    color: var(--ink);
+    background: var(--yel);
+    border: .12em solid var(--ink);
+    border-radius: .4em;
+    padding: 0 .3em;
+    margin-left: .3em;
+    font-weight: 900
+}
+
+.rnote {
+    font-size: .75em;
+    color: var(--red);
+    margin-bottom: .5em;
+    font-weight: 900
+}
+
+.big {
+    display: block;
+    width: 100%;
+    font-size: 1.3em;
+    padding: .45em;
+    border-radius: 999px;
+    background: var(--red);
+    color: #fff;
+    margin-top: .3em
+}
+
+.mid {
+    display: block;
+    width: 100%;
+    font-size: 1em;
+    padding: .5em;
+    border-radius: 999px;
+    margin-top: .8em
+}
+
+.link {
+    border: none;
+    box-shadow: none;
+    background: none;
+    font-size: .85em;
+    opacity: .65;
+    margin-top: .8em;
+    padding: .3em 1em
+}
+
+.link:active {
+    box-shadow: none
+}
+
+.mhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .8em
+}
+
+.mhead span {
+    font-size: 1.2em;
+    font-weight: 900
+}
+
+.mhead button {
+    border-radius: 999px;
+    padding: .3em .9em;
+    font-size: .8em;
+    border-width: .14em;
+    box-shadow: 0 .14em 0 var(--ink)
+}
+
+.msub {
+    font-size: .78em;
+    margin: -.4em 0 .8em;
+    text-align: left;
+    font-weight: 700;
+    opacity: .75
+}
+
+.zgrid {
+    display: grid;
+    grid-template-columns:1fr 1fr;
+    gap: .5em
+}
+
+.zc {
+    background: #fff;
+    border: .15em solid var(--ink);
+    border-radius: .9em;
+    padding: .5em;
+    text-align: center
+}
+
+.zc canvas {
+    width: 5.4em;
+    height: 5.4em;
+    display: block;
+    margin: 0 auto;
+    border-radius: .6em;
+    background: radial-gradient(circle at 50% 40%, #3a4c96, #13204a)
+}
+
+.zc b {
+    display: block;
+    font-size: .85em;
+    margin: .25em 0
+}
+
+.zc p {
+    font-size: .68em;
+    line-height: 1.5;
+    text-align: left;
+    font-weight: 600
+}
+
+.zc q {
+    display: block;
+    font-size: .68em;
+    color: var(--red);
+    margin-top: .35em;
+    text-align: left;
+    quotes: "「" "」";
+    font-weight: 800
+}
+
+.sgroup {
+    text-align: left;
+    margin-bottom: .9em
+}
+
+.sgroup h4 {
+    font-size: .85em;
+    color: var(--red);
+    margin-bottom: .3em
+}
+
+.sline {
+    font-size: .75em;
+    padding: .35em .55em;
+    background: #fff;
+    border: .12em solid var(--ink);
+    border-radius: .5em;
+    margin-bottom: .25em;
+    line-height: 1.45;
+    font-weight: 700
+}
+
+.sline i {
+    font-style: normal;
+    font-size: .8em;
+    opacity: .55;
+    margin-right: .4em
+}
+
+.sline.no {
+    opacity: .4
+}
+
+.aitem, .witem {
+    display: flex;
+    align-items: center;
+    gap: .6em;
+    text-align: left;
+    background: #fff;
+    border: .14em solid var(--ink);
+    border-radius: .8em;
+    padding: .5em .7em;
+    margin-bottom: .4em
+}
+
+.aitem .mk {
+    width: 1.7em;
+    height: 1.7em;
+    border-radius: 50%;
+    background: #e8e4da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .9em;
+    flex: none;
+    font-weight: 900
+}
+
+.aitem.ok .mk {
+    background: var(--yel);
+    border: .12em solid var(--ink)
+}
+
+.aitem b, .witem b {
+    display: block;
+    font-size: .88em
+}
+
+.aitem span, .witem span {
+    display: block;
+    font-size: .7em;
+    line-height: 1.45;
+    font-weight: 600;
+    opacity: .8
+}
+
+.aitem:not(.ok) {
+    opacity: .55
+}
+
+.witem {
+    cursor: pointer;
+    pointer-events: auto
+}
+
+.witem canvas {
+    width: 3.6em;
+    height: 3.6em;
+    flex: none;
+    border-radius: .5em;
+    background: #13204a
+}
+
+.witem.sel {
+    background: #fff3c4;
+    box-shadow: 0 0 0 .14em var(--yel)
+}
+
+.witem.locked {
+    opacity: .5;
+    cursor: default
+}
+
+.witem i {
+    font-style: normal;
+    font-size: .7em;
+    background: var(--yel);
+    border: .12em solid var(--ink);
+    border-radius: .4em;
+    padding: .1em .4em;
+    margin-left: auto;
+    flex: none;
+    font-weight: 900
+}
+
+.witem .wst {
+    color: var(--red);
+    opacity: 1;
+    font-weight: 800
+}
+
+#toasts {
+    position: absolute;
+    bottom: .8em;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .35em;
+    z-index: 10
+}
+
+.toast {
+    background: #fff;
+    font-weight: 900;
+    font-size: .82em;
+    padding: .4em 1em;
+    border-radius: 999px;
+    border: .15em solid var(--ink);
+    box-shadow: 0 .16em 0 var(--ink);
+    animation: tin .25s ease-out, tout .4s ease-in 2.1s forwards
+}
+
+.toast b {
+    color: var(--red);
+    margin-right: .5em
+}
+
+@keyframes tin {
+    from {
+        transform: translateY(.6em) scale(.9);
+        opacity: 0
+    }
+    to {
+        transform: none;
+        opacity: 1
+    }
+}
+
+@keyframes tout {
+    to {
+        opacity: 0;
+        transform: translateY(.4em)
+    }
+}
+
+#err {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    font-weight: 900;
+    padding: 2em;
+    background: #0b1433;
+    pointer-events: auto
+}

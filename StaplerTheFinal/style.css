@@ -1,0 +1,793 @@
+
+:root {
+    --pop: "Mochiy Pop One", "Hiragino Maru Gothic ProN", "Hiragino Maru Gothic Pro", "Rounded Mplus 1c", "Arial Rounded MT Bold", "Meiryo", sans-serif;
+    --hand: "Yusei Magic", "Hiragino Maru Gothic ProN", "Meiryo", sans-serif;
+    --ink: #1b0f2a;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #ff4fa3;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    font-family: var(--pop);
+    color: var(--ink)
+}
+
+#c {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block
+}
+
+#ui {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden
+}
+
+button {
+    pointer-events: auto;
+    font-family: var(--pop);
+    cursor: pointer
+}
+
+/* --- 極太縁取りテキスト（背面にストローク層を敷く） --- */
+.deco {
+    position: relative;
+    display: inline-block;
+    isolation: isolate
+}
+
+.deco::before {
+    content: attr(data-t);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    -webkit-text-stroke: var(--sw, 10px) var(--sc, #1b0f2a);
+    color: var(--sc, #1b0f2a);
+    text-shadow: var(--sh, 6px 7px 0 rgba(40, 0, 40, .45))
+}
+
+.deco .fg {
+    position: relative;
+    color: var(--fc, #fff)
+}
+
+.deco.rainbow .fg, .rainbowTxt {
+    background: linear-gradient(90deg, #ff004c, #ff9900, #ffee00, #33dd55, #00c8ff, #7a5cff, #ff3fd0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent
+}
+
+.deco.fire .fg {
+    background: linear-gradient(180deg, #fff64d 0%, #ffb000 40%, #ff3d00 75%, #d4001a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent
+}
+
+.deco.sad .fg {
+    color: #9fd8ff
+}
+
+.deco.bad .fg {
+    color: #ffe14d
+}
+
+/* --- タイトル --- */
+.screen {
+    display: none
+}
+
+#title {
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.2vh;
+    text-align: center
+}
+
+#title.show {
+    display: flex
+}
+
+#logo {
+    animation: wobble 2.6s ease-in-out infinite;
+    line-height: 1.08;
+    margin-bottom: 1vh
+}
+
+#logo .r1 {
+    font-size: clamp(46px, 12.5vw, 156px);
+    --sw: 24px
+}
+
+#logo .r1 .fg {
+    background: linear-gradient(180deg, #fffb6b 0%, #ffd000 45%, #ff6a00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent
+}
+
+#logo .r2 {
+    font-size: clamp(28px, 7.2vw, 92px);
+    --sw: 16px;
+    transform: rotate(4deg) translateX(5vw)
+}
+
+@keyframes wobble {
+    0%, 100% {
+        transform: rotate(-10deg) translateY(0) scale(1)
+    }
+    50% {
+        transform: rotate(-5deg) translateY(-1.4vh) scale(1.04)
+    }
+}
+
+#catch {
+    font-family: var(--hand);
+    font-size: clamp(15px, 3.2vw, 30px);
+    background: #fff;
+    padding: .35em 1.1em;
+    border: 4px solid var(--ink);
+    transform: rotate(2deg);
+    box-shadow: 6px 6px 0 var(--ink);
+    max-width: 88vw
+}
+
+.blink {
+    animation: blink 1s steps(2, start) infinite
+}
+
+@keyframes blink {
+    to {
+        visibility: hidden
+    }
+}
+
+#startMsg {
+    font-size: clamp(20px, 4vw, 40px);
+    --sw: 10px
+}
+
+#titleStats {
+    font-size: clamp(13px, 2.2vw, 20px);
+    background: rgba(255, 255, 255, .85);
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    padding: .4em 1em;
+    line-height: 1.6
+}
+
+#titleStats b {
+    color: #ff2d55;
+    font-size: 1.25em
+}
+
+.btnRow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px
+}
+
+.btn {
+    font-size: clamp(16px, 2.6vw, 22px);
+    padding: .55em 1.2em;
+    border: 4px solid var(--ink);
+    border-radius: 999px;
+    background: #ff4fa3;
+    color: #fff;
+    box-shadow: 4px 5px 0 var(--ink);
+    text-shadow: 2px 2px 0 var(--ink)
+}
+
+.btn:active {
+    transform: translate(3px, 4px);
+    box-shadow: 1px 1px 0 var(--ink)
+}
+
+.btn.yellow {
+    background: #ffe14d;
+    color: var(--ink);
+    text-shadow: none
+}
+
+.btn.black {
+    background: #111;
+    color: #fff
+}
+
+.btn.cyan {
+    background: #34d3ff;
+    color: var(--ink);
+    text-shadow: none
+}
+
+#topbar {
+    position: absolute;
+    top: max(8px, env(safe-area-inset-top));
+    right: 8px;
+    display: flex;
+    gap: 6px;
+    z-index: 20
+}
+
+.mini {
+    font-size: 12px;
+    padding: .45em .8em;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 2px 3px 0 var(--ink)
+}
+
+/* --- HUD --- */
+#hint {
+    position: absolute;
+    left: 50%;
+    bottom: calc(4vh + env(safe-area-inset-bottom));
+    transform: translateX(-50%) rotate(-2deg);
+    display: none;
+    background: #ffe14d;
+    border: 4px solid var(--ink);
+    border-radius: 999px;
+    padding: .4em 1.2em;
+    font-size: clamp(14px, 2.6vw, 24px);
+    white-space: nowrap;
+    box-shadow: 5px 5px 0 var(--ink)
+}
+
+#hint.show {
+    display: block;
+    animation: pulse .7s ease-in-out infinite alternate
+}
+
+@keyframes pulse {
+    to {
+        transform: translateX(-50%) rotate(2deg) scale(1.06)
+    }
+}
+
+/* --- パワーバー --- */
+#power {
+    position: absolute;
+    right: max(5vw, 18px);
+    top: 17vh;
+    height: 60vh;
+    width: clamp(36px, 6vw, 56px);
+    display: none
+}
+
+#power.show {
+    display: block;
+    animation: slideIn .35s cubic-bezier(.2, 1.6, .4, 1)
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(160%)
+    }
+    to {
+        transform: none
+    }
+}
+
+#power .bar {
+    position: absolute;
+    inset: 0;
+    border: 5px solid var(--ink);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 6px 6px 0 var(--ink)
+}
+
+#power .z {
+    position: absolute;
+    left: 0;
+    right: 0
+}
+
+#power .z.weak {
+    background: repeating-linear-gradient(45deg, #2f8bff 0 10px, #58a6ff 10px 20px)
+}
+
+#power .z.just {
+    background: #29e05a;
+    box-shadow: inset 0 0 0 3px #fff
+}
+
+#power .z.strong {
+    background: repeating-linear-gradient(-45deg, #ff2d2d 0 10px, #ff6060 10px 20px)
+}
+
+#power .marker {
+    position: absolute;
+    left: -16px;
+    right: -16px;
+    height: 10px;
+    background: #111;
+    border: 3px solid #fff;
+    border-radius: 6px;
+    transform: translateY(50%);
+    z-index: 2;
+    box-shadow: 0 0 0 3px var(--ink)
+}
+
+#power .ptitle {
+    position: absolute;
+    top: -2.2em;
+    left: 50%;
+    transform: translateX(-50%) rotate(-6deg);
+    font-size: clamp(16px, 2.6vw, 26px);
+    --sw: 8px;
+    white-space: nowrap
+}
+
+#power .lab {
+    position: absolute;
+    right: calc(100% + 18px);
+    transform: translateY(50%) rotate(-5deg);
+    font-family: var(--hand);
+    white-space: nowrap;
+    font-size: clamp(14px, 2.4vw, 26px);
+    background: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+    padding: .1em .5em;
+    transition: transform .1s
+}
+
+#power .lab.weak {
+    color: #1f6fe0
+}
+
+#power .lab.just {
+    color: #0b9a33
+}
+
+#power .lab.strong {
+    color: #e01b1b
+}
+
+#power .lab.on {
+    transform: translateY(50%) rotate(-5deg) scale(1.35);
+    background: #ffe14d
+}
+
+/* --- 吹き出し --- */
+#bubble {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    will-change: transform;
+    z-index: 5
+}
+
+#bubble.show {
+    display: block
+}
+
+#bubble .in {
+    position: relative;
+    background: #fff;
+    border: 5px solid var(--ink);
+    border-radius: 26px;
+    padding: .45em .9em;
+    font-family: var(--hand);
+    font-size: clamp(15px, 2.5vw, 28px);
+    max-width: min(78vw, 620px);
+    width: max-content;
+    box-shadow: 6px 6px 0 rgba(27, 15, 42, .55);
+    animation: pop .35s cubic-bezier(.2, 1.7, .4, 1)
+}
+
+#bubble .in::after {
+    content: "";
+    position: absolute;
+    left: 30%;
+    bottom: -27px;
+    border: 13px solid transparent;
+    border-top: 18px solid var(--ink)
+}
+
+#bubble.big .in {
+    font-family: var(--pop);
+    font-size: clamp(18px, 3.6vw, 44px)
+}
+
+#bubble.angry .in {
+    background: #fff0ec;
+    border-color: #d0001a;
+    color: #d0001a;
+    animation: pop .35s cubic-bezier(.2, 1.7, .4, 1), jit .07s linear infinite
+}
+
+#bubble.angry .in::after {
+    border-top-color: #d0001a
+}
+
+@keyframes pop {
+    from {
+        transform: scale(.2)
+    }
+    to {
+        transform: scale(1)
+    }
+}
+
+@keyframes jit {
+    0% {
+        translate: 0 0
+    }
+    25% {
+        translate: 3px -2px
+    }
+    50% {
+        translate: -2px 3px
+    }
+    75% {
+        translate: 2px 2px
+    }
+    100% {
+        translate: 0 0
+    }
+}
+
+/* --- テロップ --- */
+#telop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 11vh;
+    text-align: center;
+    display: none;
+    z-index: 6
+}
+
+#telop.show {
+    display: block
+}
+
+#telop .in {
+    display: inline-block;
+    font-size: clamp(34px, 8.5vw, 104px);
+    --sw: 16px;
+    transform: rotate(-4deg);
+    animation: telopIn .55s cubic-bezier(.2, 1.8, .4, 1);
+    max-width: 94vw
+}
+
+@keyframes telopIn {
+    from {
+        transform: rotate(-30deg) scale(3);
+        opacity: 0
+    }
+    to {
+        transform: rotate(-4deg) scale(1);
+        opacity: 1
+    }
+}
+
+/* --- 先生のクソデカ叫び --- */
+#shout {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    display: none;
+    white-space: nowrap;
+    transform: translate(-50%, -50%) rotate(-7deg);
+    z-index: 7
+}
+
+#shout.show {
+    display: block
+}
+
+#shout .in {
+    font-size: clamp(70px, 19vw, 320px);
+    --sw: 30px;
+    animation: shoutIn .25s cubic-bezier(.2, 1.8, .4, 1), jit .05s linear infinite
+}
+
+@keyframes shoutIn {
+    from {
+        transform: scale(.1)
+    }
+    to {
+        transform: scale(1)
+    }
+}
+
+/* --- 受理ハンコ --- */
+#stampWrap {
+    position: absolute;
+    left: 50%;
+    top: 47%;
+    width: min(80vw, 80vh);
+    height: min(80vw, 80vh);
+    display: none;
+    transform: translate(-50%, -50%) rotate(-12deg);
+    mix-blend-mode: multiply;
+    z-index: 8
+}
+
+#stampWrap.show {
+    display: block
+}
+
+#stampWrap.drop {
+    animation: stampDrop .35s cubic-bezier(.7, 0, 1, 1) both
+}
+
+#stampWrap.dim {
+    animation: none;
+    opacity: .28;
+    transition: opacity .5s
+}
+
+#stampWrap canvas {
+    width: 100%;
+    height: 100%;
+    display: block
+}
+
+@keyframes stampDrop {
+    0% {
+        transform: translate(-50%, -50%) scale(4.5) rotate(-40deg);
+        opacity: 0
+    }
+    50% {
+        opacity: 1
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1) rotate(-12deg);
+        opacity: 1
+    }
+}
+
+/* --- GAME OVER --- */
+#gameover {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.5vh;
+    z-index: 8
+}
+
+#gameover.show {
+    display: flex;
+    animation: fadeIn 1.2s
+}
+
+#gameover.dim {
+    opacity: .25;
+    transition: opacity .6s
+}
+
+#gameover .go1 {
+    font-size: clamp(54px, 14vw, 190px);
+    --sw: 20px;
+    --sc: #000;
+    --fc: #ff2d2d
+}
+
+#gameover .go2 {
+    font-size: clamp(20px, 4.6vw, 56px);
+    --sw: 10px
+}
+
+#gameover .go3 {
+    font-family: var(--hand);
+    font-size: clamp(15px, 3vw, 32px);
+    color: #fff;
+    text-shadow: 2px 2px 0 #000
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(1.3)
+    }
+    to {
+        opacity: 1;
+        transform: none
+    }
+}
+
+#flash {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    opacity: 0;
+    z-index: 9
+}
+
+/* --- パネル（リザルト・図鑑） --- */
+.panel {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-1.5deg);
+    width: min(92vw, 640px);
+    max-height: 88vh;
+    overflow: auto;
+    background: #fff86b;
+    border: 6px solid var(--ink);
+    border-radius: 24px;
+    box-shadow: 10px 10px 0 var(--ink);
+    padding: 22px 18px;
+    pointer-events: auto;
+    text-align: center;
+    z-index: 12;
+    touch-action: pan-y;
+    box-sizing: border-box
+}
+
+.panel.show {
+    display: block;
+    animation: panelIn .45s cubic-bezier(.2, 1.6, .4, 1)
+}
+
+@keyframes panelIn {
+    from {
+        transform: translate(-50%, -50%) rotate(-12deg) scale(.3)
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(-1.5deg) scale(1)
+    }
+}
+
+#result .rhead {
+    font-size: clamp(40px, 9vw, 80px);
+    --sw: 14px;
+    margin: .05em 0 .15em
+}
+
+#result .score {
+    font-size: clamp(18px, 3.6vw, 30px)
+}
+
+#result .score b {
+    font-size: 2em;
+    color: #ff2d55;
+    -webkit-text-stroke: 2px var(--ink)
+}
+
+#result .tl {
+    margin-top: .6em;
+    font-size: 14px;
+    opacity: .75
+}
+
+#result .tmain {
+    font-size: clamp(26px, 6.4vw, 54px);
+    --sw: 12px;
+    margin: .1em 0
+}
+
+#result .tsub {
+    font-size: clamp(13px, 2.4vw, 18px);
+    opacity: .85
+}
+
+#result .newt {
+    display: inline-block;
+    margin-top: .6em;
+    background: #ff2d55;
+    color: #fff;
+    border-radius: 10px;
+    padding: .3em .8em;
+    font-size: clamp(12px, 2.2vw, 16px);
+    transform: rotate(-2deg);
+    animation: pulse2 .6s ease-in-out infinite alternate
+}
+
+@keyframes pulse2 {
+    to {
+        transform: rotate(2deg) scale(1.06)
+    }
+}
+
+#result .info {
+    margin: .8em 0 .6em;
+    font-size: clamp(12px, 2.2vw, 16px);
+    line-height: 1.7;
+    background: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: .4em .8em
+}
+
+#zukan h2 {
+    margin: .1em 0 .4em;
+    font-size: clamp(28px, 6vw, 48px);
+    --sw: 12px
+}
+
+#zukan .cnt {
+    font-size: 16px;
+    margin-bottom: .6em
+}
+
+#zukan .grp {
+    margin: .8em 0 .3em;
+    font-size: 15px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 8px;
+    padding: .2em .6em;
+    display: inline-block
+}
+
+#zukan .grid {
+    display: grid;
+    grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
+    gap: 6px
+}
+
+#zukan .it {
+    background: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+    padding: .45em .3em;
+    font-size: 14px
+}
+
+#zukan .it.no {
+    background: #ddd;
+    color: #888
+}
+
+#zukan .it .c {
+    display: block;
+    font-size: 10px;
+    opacity: .6;
+    margin-top: 2px
+}
+
+#loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    background: #ff4fa3;
+    z-index: 30;
+    pointer-events: auto
+}
+
+#loading.hide {
+    display: none
+}
+
+#err {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #ff4fa3;
+    font-size: 20px;
+    padding: 20px;
+    text-align: center;
+    z-index: 31
+}
